@@ -4,6 +4,7 @@ const Exercise = require("../models/exercise.js");
 router.get("/api/workouts/range", (req, res) => {
     Exercise.find({})
         .then(dbExercise => {
+            console.log("range")
             console.log(dbExercise);
             res.json(dbExercise);
 
@@ -16,6 +17,7 @@ router.get("/api/workouts/range", (req, res) => {
 
 
 router.post("/api/workouts", ({ body }, res) => {
+    console.log("posting");
     console.log(body);
     Exercise.create(body)
         .then(dbExercise => {
@@ -37,7 +39,42 @@ router.get("/api/workouts", (req, res) => {
 });
 
 router.put("/api/workouts/:id", (req, res) => {
-    console.log(req.body);
-    console.log(req.params._id);
+    const workout = req.body;
+    // console.log(req.params.id);
+    if (workout.type === "cardio") {
+        Exercise.updateOne({ _id: req.params.id },
+            {
+                exercises: [{
+                    type: workout.type,
+                    name: workout.name,
+                    duration: workout.duration,
+                    distance: workout.distance
+                }]
+            }).then(results => {
+                console.log(results)
+                res.json(results);
+            }).catch(err => {
+                console.log(err)
+            })
+    } else {
+        Exercise.updateOne({ _id: req.params.id },
+            {
+                exercises: [{
+                    type: workout.type,
+                    name: workout.name,
+                    duration: workout.duration,
+                    weight: workout.weight,
+                    reps: workout.reps,
+                    sets: workout.sets,
+                }]
+            }).then(results => {
+                console.log(results)
+                res.json(results);
+            }).catch(err => {
+                console.log(err)
+            });
+    }
+
+
 });
 module.exports = router;
