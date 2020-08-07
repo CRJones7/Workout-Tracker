@@ -4,13 +4,12 @@ const mongoose = require("mongoose");
 
 const PORT = process.env.PORT || 3000;
 
-// const db = require("./models/exercise");
 
 const app = express();
-const apiRpoutes = require("./routes/api.js");
+const apiRoutes = require("./routes/api.js");
 const viewRoutes = require("./routes/views.js");
 
-app.use(logger("dev"));
+// app.use(logger("dev"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -23,7 +22,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
 });
 
 
-app.use(apiRpoutes);
+app.use(apiRoutes);
 app.use(viewRoutes);
 
 
